@@ -31,7 +31,7 @@ void Eat(unsigned int phil_position, unsigned int eat_time, Fork* left, Fork* ri
 
 	while (true) {
 		//trying to take left fork
-		if (left->try_acquire()) {
+		left->acquire();
 			//trying to take right fork
 			if (right->try_acquire()) {
 				//signal user that philosopher started eating
@@ -46,7 +46,6 @@ void Eat(unsigned int phil_position, unsigned int eat_time, Fork* left, Fork* ri
 			else {
 				left->release();
 			}
-		}
 	}
 	//after philosopher finished eating we release forks
 	left->release();
@@ -67,7 +66,7 @@ int main(){
 
 	//initialize threads with function Eat and its arguments
 	for (unsigned int i = 0; i < phil_count; i++) {
-		philosophers[i] = Philosopher(Eat, i, 1 + rand() % 4, &forks[i % phil_count], &forks[(i + 1) % phil_count]);
+		philosophers[i] = Philosopher(Eat, i, 1 + rand() % 6, &forks[i % phil_count], &forks[(i + 1) % phil_count]);
 	}
 
 	//block execution of main() until all philosophers finish their meals
